@@ -733,10 +733,10 @@ static NSString* toBase64(NSData* data) {
     cameraPicker.allowsEditing = pictureOptions.allowsEditing;
 
     if (cameraPicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-        // We only allow taking pictures (no video) in this API.
-        cameraPicker.mediaTypes = @[(NSString*)kUTTypeImage];
-        // We can only set the camera device if we're actually using the camera.
-        cameraPicker.cameraDevice = pictureOptions.cameraDirection;
+        // FIX/patch for allowing videos as well
+        if(pictureOptions.mediaType == MediaTypeAll){
+           cameraPicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:cameraPicker.sourceType];
+        }
     } else if (pictureOptions.mediaType == MediaTypeAll) {
         cameraPicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:cameraPicker.sourceType];
     } else {
