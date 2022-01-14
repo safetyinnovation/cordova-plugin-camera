@@ -210,6 +210,10 @@ static NSString* toBase64(NSData* data) {
             self.hasPendingOperation = NO;
         } else {
             cameraPicker.modalPresentationStyle = UIModalPresentationCurrentContext;
+            // set videoQuality to High
+            cameraPicker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+            cameraPicker.editing = YES;
+
             [self.viewController presentViewController:cameraPicker animated:YES completion:^{
                 self.hasPendingOperation = NO;
             }];
@@ -291,11 +295,13 @@ static NSString* toBase64(NSData* data) {
             }
         }
         
-        
         UIImagePickerController* cameraPicker = (UIImagePickerController*)navigationController;
 
         if(![cameraPicker.mediaTypes containsObject:(NSString*)kUTTypeImage]){
             [viewController.navigationItem setTitle:NSLocalizedString(@"Videos", nil)];
+            // video quality high
+            cameraPicker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+            cameraPicker.editing = YES;
         }
     }
 }
@@ -742,6 +748,9 @@ static NSString* toBase64(NSData* data) {
     } else {
         NSArray* mediaArray = @[(NSString*)(pictureOptions.mediaType == MediaTypeVideo ? kUTTypeMovie : kUTTypeImage)];
         cameraPicker.mediaTypes = mediaArray;
+    }
+    if (@available(iOS 11.0, *)) {
+        cameraPicker.videoExportPreset = AVAssetExportPreset1920x1080; //full hd
     }
 
     return cameraPicker;
